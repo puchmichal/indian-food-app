@@ -1,1 +1,0 @@
-web: docker build -t indian-food-app; docker run --name indian-food-app -p 5000:5000 indian-food-app
