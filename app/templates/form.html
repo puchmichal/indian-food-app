@@ -1,0 +1,13 @@
+{% block content %}
+<div class="formwrapper">
+  <h2 class="title">Form</h2>
+  <form method="POST" action="/">
+      <div class="form-field">{{ form.name.label }} {{ form.name(size=20) }}</div>
+        <div class="form-field">{{ form.delivery_rating.label }} {{ form.delivery_rating(size=20) }}</div>
+        <div class="form-field">{{ form.taste_rating.label }} {{ form.taste_rating(size=20) }}</div>
+
+      <div class="form-field">{{ form.website.label }} {{ form.website }}</div>
+      {{ form.submit() }}
+  </form>
+</div>
+{% endblock %}
