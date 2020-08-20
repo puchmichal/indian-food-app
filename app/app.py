@@ -1,12 +1,11 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from statistics import mean
 
 from app.config import Config
-from app.forms import NewRatingForm
 
 app = Flask(__name__)
 app.config.from_object(Config)
