@@ -1,0 +1,1 @@
+web: flask db upgrade; gunicorn --workers 4 --timeout=900 --threads 4 run:app
