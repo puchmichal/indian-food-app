@@ -127,3 +127,16 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# migration folder
+migrations/
+
+# local instance of database
+app/app.db
+
+# flake8/black configs
+setup.cfg
+pyproject.toml
+
+# VSCode stuff
+.vscode/

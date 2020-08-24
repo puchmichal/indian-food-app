@@ -1,12 +1,11 @@
 import os
 
-from flask import Flask, render_template
+from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from statistics import mean
 
 from app.config import Config
-from app.forms import NewRatingForm
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -18,10 +17,7 @@ app.config["SECRET_KEY"] = SECRET_KEY
 from app.models import Restaurant
 
 with app.app_context():
-    if db.engine.url.drivername == "sqlite":
-        migrate.init_app(app, db, render_as_batch=True)
-    else:
-        migrate.init_app(app, db)
+    migrate.init_app(app, db)
 
 
 @app.route("/")
