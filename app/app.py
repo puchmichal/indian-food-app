@@ -1,9 +1,9 @@
 import os
+from statistics import mean
 
 from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from statistics import mean
 
 from app.config import Config
 
@@ -13,6 +13,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 SECRET_KEY = os.urandom(32)
 app.config["SECRET_KEY"] = SECRET_KEY
+
 
 from app.models import Restaurant
 
@@ -35,3 +36,4 @@ def get_all_restaurants():
             for restaurant, rating in restaurants_dict.items()
         ]
     )
+    return ":)"
