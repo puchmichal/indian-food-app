@@ -1,29 +1,27 @@
 import os
 from statistics import mean
 
-from flask import Flask
 from flask_migrate import Migrate
+from flask import Flask
+
 from flask_sqlalchemy import SQLAlchemy
 
-from app.config import Config
-
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(os.environ["APP_SETTINGS"])
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-SECRET_KEY = os.urandom(32)
-app.config["SECRET_KEY"] = SECRET_KEY
-
 
 from app.models import Restaurant
-
-with app.app_context():
-    migrate.init_app(app, db)
 
 
 @app.route("/")
 def get_all_restaurants():
     restaurants = db.session.query(Restaurant)
+
+    if not restaurants:
+        return "No ratings by now :C"
+
     restaurants_dict = {
         restaurant.name: mean(
             [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
@@ -36,3 +34,7 @@ def get_all_restaurants():
             for restaurant, rating in restaurants_dict.items()
         ]
     )
+
+
+if __name__ == "__main__":
+    app.run()
