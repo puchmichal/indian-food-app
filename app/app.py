@@ -36,4 +36,3 @@ def get_all_restaurants():
             for restaurant, rating in restaurants_dict.items()
         ]
     )
-    return ":)"
