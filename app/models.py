@@ -20,10 +20,5 @@ class Restaurant(db.Model):
     name = db.Column(db.String(64), index=True, unique=True)
     ratings = db.relationship("Rating", backref="score", lazy="dynamic")
 
-    def __init__(self, id, name, ratings):
-        self.id = id
-        self.name = name
-        self.ratings = ratings
-
     def __repr__(self):
         return f"Restaurant {self.name}"
