@@ -2,8 +2,6 @@ from app.app import db
 
 
 class Rating(db.Model):
-    __tablename__ = "restaurant"
-
     id = db.Column(db.Integer, primary_key=True)
     taste = db.Column(db.Float)
     delivery = db.Column(db.Float)
