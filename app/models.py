@@ -2,6 +2,8 @@ from app.app import db
 
 
 class Rating(db.Model):
+    __tablename__ = "restaurant"
+
     id = db.Column(db.Integer, primary_key=True)
     taste = db.Column(db.Float)
     delivery = db.Column(db.Float)
@@ -12,9 +14,11 @@ class Rating(db.Model):
 
 
 class Restaurant(db.Model):
+    __tablename__ = "restaurant"
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
     ratings = db.relationship("Rating", backref="score", lazy="dynamic")
 
     def __repr__(self):
-        return "<Restaurant {}>".format(self.name)
+        return f"Restaurant {self.name}"
