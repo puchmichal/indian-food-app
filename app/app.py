@@ -14,14 +14,10 @@ migrate = Migrate(app, db)
 SECRET_KEY = os.urandom(32)
 app.config["SECRET_KEY"] = SECRET_KEY
 
-
 from app.models import Restaurant
 
 with app.app_context():
-    if db.engine.url.drivername == "sqlite":
-        migrate.init_app(app, db, render_as_batch=True)
-    else:
-        migrate.init_app(app, db)
+    migrate.init_app(app, db)
 
 
 @app.route("/")
@@ -39,4 +35,3 @@ def get_all_restaurants():
             for restaurant, rating in restaurants_dict.items()
         ]
     )
-    return ":)"

@@ -137,3 +137,6 @@ app/app.db
 # flake8/black configs
 setup.cfg
 pyproject.toml
+
+# VSCode stuff
+.vscode/

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 alembic==1.4.2
 appdirs==1.4.4
 attrs==19.3.0
@@ -32,3 +33,11 @@ typed-ast==1.4.1
 Werkzeug==1.0.1
 WTForms==2.3.3
 zipp==3.1.0
+=======
+flask==1.1.2
+flask-migrate==2.5.3
+flask-sqlalchemy==2.4.4
+flask-wtf==0.14.3
+gunicorn==20.0.4
+psycopg2==2.8.5
+>>>>>>> 0b12702a2f8cc9177be2ae4c1846de0d3a17779d
