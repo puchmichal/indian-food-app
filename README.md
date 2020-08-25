@@ -1,13 +1,19 @@
 # indian-food-app
 
 # how to run app locally:
-1) create and activate virtual enviroment then install the dependencies:
-    pip install -r requirements.txt
+1) Install heroku CLI appropriately for yout opertain system, instructions can be found:
+    https://devcenter.heroku.com/articles/getting-started-with-python#set-up
 
-2) create local instance of database:
-    flask db init
-    flask db migrate -m "my first migration"
-    flask db upgrade
+2) create and activate virtual enviroment then install the dependencies:\
+    pip install -r requirements.txt\
 
-3) run app by comman:
-    python run.py
+2a) install developer dependecies:\
+    pip install -r requirements.dev.txt\
+
+3) create local instance of database:\
+    python manage.py db init\
+    python manage.py db migrate\
+    python manage.py db upgrade\
+
+4) run app by command:\
+    heroku local web 

@@ -1,32 +1,32 @@
 import os
+from statistics import mean
 
 from flask import Flask, render_template, flash
 from flask_migrate import Migrate
+
 from flask_sqlalchemy import SQLAlchemy
-from statistics import mean
 
 from werkzeug.utils import redirect
 
-from app.config import Config
 from app.forms import NewRatingForm
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(os.environ["APP_SETTINGS"])
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
-SECRET_KEY = os.urandom(32)
-app.config["SECRET_KEY"] = SECRET_KEY
 
 from app.models import Restaurant, Rating
-
-with app.app_context():
-    migrate.init_app(app, db)
 
 
 @app.route('/')
 @app.route("/index")
 def get_all_restaurants():
     restaurants = db.session.query(Restaurant)
+
+    if not restaurants:
+        return "No ratings by now :C"
+
     restaurants_list = [
         {"name": restaurant.name, "general_rating": mean(
             [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
@@ -58,10 +58,18 @@ def adding_rating():
 
         restaurant_id = restaurant_in_database[0].id
 
-        rating = Rating(taste=form.taste_rating.data, delivery=form.delivery_rating.data, restaurant_id=restaurant_id)
+        rating = Rating(
+            taste=form.taste_rating.data,
+            delivery=form.delivery_rating.data,
+            restaurant_id=restaurant_id,
+        )
         db.session.add(rating)
         db.session.commit()
 
         flash('Visit in restauarant {} has been added 🕉'.format(form.name.data))
         return redirect("/index")
     return render_template('form.html', title='Sign In', form=form)
+
+
+if __name__ == "__main__":
+    app.run()
