@@ -11,7 +11,7 @@ from werkzeug.utils import redirect
 from app.forms import NewRatingForm
 
 app = Flask(__name__)
-app.config.from_object(os.environ["APP_SETTINGS"])
+app.config.from_object(os.environ.get("APP_SETTINGS",  "config.Config"))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -20,7 +20,6 @@ from app.models import Restaurant, Rating
 
 
 @app.route('/')
-@app.route("/index")
 def get_all_restaurants():
     restaurants = db.session.query(Restaurant)
 
@@ -44,7 +43,7 @@ def get_all_restaurants():
 
 
 @app.route('/form', methods=['GET', 'POST'])
-def adding_rating():
+def add_rating():
     form = NewRatingForm()
     if form.validate_on_submit():
         restaurant_in_database = list(db.session.query(Restaurant).filter_by(name=form.name.data))
@@ -66,7 +65,7 @@ def adding_rating():
         db.session.add(rating)
         db.session.commit()
 
-        flash('Visit in restauarant {} has been added 🕉'.format(form.name.data))
+        flash("Visit in restauarant {} has been added 🕉".format(form.name.data))
         return redirect("/index")
     return render_template('form.html', title='Sign In', form=form)
 
