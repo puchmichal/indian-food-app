@@ -45,6 +45,7 @@ def get_all_restaurants():
 @app.route('/form', methods=['GET', 'POST'])
 def add_rating():
     form = NewRatingForm()
+
     if form.validate_on_submit():
         restaurant_in_database = list(db.session.query(Restaurant).filter_by(name=form.name.data))
 
@@ -66,8 +67,10 @@ def add_rating():
         db.session.commit()
 
         flash("Visit in restauarant {} has been added 🕉".format(form.name.data))
-        return redirect("/index")
-    return render_template('form.html', title='Sign In', form=form)
+        return redirect("/")
+    restaurant_in_database = list(db.session.query(Restaurant))
+
+    return render_template('form.html', title='Sign In', form=form, restaurants=[restaurant.name for restaurant in restaurant_in_database])
 
 
 if __name__ == "__main__":

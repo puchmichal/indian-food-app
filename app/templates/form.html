@@ -5,9 +5,9 @@
     <h2 class="title">Form</h2>
         <form method="post" action="" novalidate>
             {{ form.hidden_tag() }}
-            <div class="form-field">{{ form.name.label }} {{ form.name(size=20) }}</div>
-                <div class="form-field">{{ form.delivery_rating.label }} {{ form.delivery_rating(size=20) }}</div>
-                <div class="form-field">{{ form.taste_rating.label }} {{ form.taste_rating(size=20) }}</div>
+            <div class="form-field">{{ form.name.label }} {{ form.name(size=20, datalist=restaurants) }}</div>
+            <div class="form-field">{{ form.delivery_rating.label }} {{ form.delivery_rating(size=20) }}</div>
+            <div class="form-field">{{ form.taste_rating.label }} {{ form.taste_rating(size=20) }}</div>
 
             <div class="form-field">{{ form.website.label }} {{ form.website }}</div>
             {{ form.submit() }}
