@@ -1,28 +1,23 @@
 import os
 from statistics import mean
 
-from flask_migrate import Migrate
-from flask_basicauth import BasicAuth
 from flask import Flask
-
+from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_user import UserManager, roles_required
 
 app = Flask(__name__)
-app.config.from_object(os.environ["APP_SETTINGS"])
+app.config.from_object(os.environ.get("APP_SETTINGS", "config.Config"))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
-app.config["BASIC_AUTH_USERNAME"] = "kocham"
-app.config["BASIC_AUTH_PASSWORD"] = "naany"
-basic_auth = BasicAuth(app)
-
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app.models import Restaurant
+from app.models import Restaurant, User
+
+user_manager = UserManager(app, db, User)
 
 
 @app.route("/")
-@basic_auth.required
 def get_all_restaurants():
     restaurants = db.session.query(Restaurant)
 
@@ -41,6 +36,12 @@ def get_all_restaurants():
             for restaurant, rating in restaurants_dict.items()
         ]
     )
+
+
+@app.route("/admin_panel")
+@roles_required(["Admin"])
+def admin_page():
+    return "You are admin!"
 
 
 if __name__ == "__main__":
