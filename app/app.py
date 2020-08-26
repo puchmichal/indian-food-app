@@ -45,6 +45,22 @@ def get_all_restaurants():
 @app.route('/add_visit', methods=['GET', 'POST'])
 def add_rating():
     if request.method == "POST":
+        # validate form
+        req = request.form
+        missing = list()
+
+        for k, v in req.items():
+            if v == "":
+                missing.append(k)
+
+        if missing:
+            feedback = f"Please fill fields: {', '.join(missing)}"
+            restaurant_in_database = [restaurant.name for restaurant in db.session.query(Restaurant)]
+            if len(restaurant_in_database) == 0:
+                restaurant_in_database = ["No restaurant added yet."]
+            return render_template("form.html", title="Add Visit",feedback=feedback, restaurants=restaurant_in_database)
+        
+        # add data to database
         restaurant_in_database = list(db.session.query(Restaurant).filter_by(name=request.form.get("name")))
 
         if len(restaurant_in_database) == 0:
@@ -68,9 +84,11 @@ def add_rating():
         flash("Visit in restauarant {} has been added 🕉".format(request.form.get("name")))
         return redirect("/")
 
-    restaurant_in_database = list(db.session.query(Restaurant))
+    restaurant_in_database = [restaurant.name for restaurant in db.session.query(Restaurant)]
+    if len(restaurant_in_database) == 0:
+        restaurant_in_database = ["No restaurant added yet."]
 
-    return render_template('form.html', title='Sign In', restaurants=[restaurant.name for restaurant in restaurant_in_database] or ["hej"])
+    return render_template("form.html", title="Add Visit", restaurants=restaurant_in_database)
 
 
 if __name__ == "__main__":
