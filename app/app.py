@@ -10,7 +10,7 @@ from werkzeug.utils import redirect
 
 
 app = Flask(__name__)
-app.config.from_object(os.environ.get("APP_SETTINGS",  "config.Config"))
+app.config.from_object(os.environ.get("APP_SETTINGS", "config.Config"))
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -26,22 +26,21 @@ def get_all_restaurants():
         return "No ratings by now :C"
 
     restaurants_list = [
-        {"name": restaurant.name, "general_rating": mean(
-            [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
-        ),
-         "taste_rating":  mean(
-            [rating.taste for rating in restaurant.ratings]
-        ),
-         "delivery_rating": mean(
-            [rating.delivery for rating in restaurant.ratings]
-        )}
+        {
+            "name": restaurant.name,
+            "general_rating": mean(
+                [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
+            ),
+            "taste_rating": mean([rating.taste for rating in restaurant.ratings]),
+            "delivery_rating": mean([rating.delivery for rating in restaurant.ratings]),
+        }
         for restaurant in restaurants
     ]
 
-    return render_template('leaderboard.html', title='Leader Board', restaurants=restaurants_list)
+    return render_template("leaderboard.html", title="Leader Board", restaurants=restaurants_list)
 
 
-@app.route('/add_visit', methods=['GET', 'POST'])
+@app.route("/add_visit", methods=["GET", "POST"])
 def add_rating():
     if request.method == "POST":
         # validate form
@@ -54,20 +53,30 @@ def add_rating():
 
         if missing:
             feedback = f"Please fill fields: {', '.join(missing)}"
-            restaurant_in_database = [restaurant.name for restaurant in db.session.query(Restaurant)]
+            restaurant_in_database = [
+                restaurant.name for restaurant in db.session.query(Restaurant)
+            ]
             if len(restaurant_in_database) == 0:
                 restaurant_in_database = ["No restaurant added yet."]
-            return render_template("form.html", title="Add Visit",feedback=feedback, restaurants=restaurant_in_database)
-        
+            return render_template(
+                "form.html",
+                title="Add Visit",
+                feedback=feedback,
+                restaurants=restaurant_in_database,
+            )
+
         # add data to database
-        restaurant_in_database = list(db.session.query(Restaurant).filter_by(name=request.form.get("name")))
+        restaurant_in_database = list(
+            db.session.query(Restaurant).filter_by(name=request.form.get("name"))
+        )
 
         if len(restaurant_in_database) == 0:
             restaurant = Restaurant(name=request.form.get("name"))
             db.session.add(restaurant)
             db.session.commit()
             restaurant_in_database = list(
-                db.session.query(Restaurant).filter_by(name=request.form.get("name")))
+                db.session.query(Restaurant).filter_by(name=request.form.get("name"))
+            )
 
         restaurant_id = restaurant_in_database[0].id
 
