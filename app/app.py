@@ -7,8 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager, roles_required
 
 app = Flask(__name__)
-app.config.from_object(os.environ.get("APP_SETTINGS", "config.Config"))
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config.from_object(os.environ.get("APP_CONFIG"))
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
