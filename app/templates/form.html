@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <h1>Add new visit</h1>
+                <hr>
+
+                <form action="/add_visit" method="POST">
+                    {% if feedback %}
+                        <p class="text-danger float-right">{{ feedback }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <label>Restaurant name</label>
+                        <input list="restarnat_names" name="name" id="name", placeholder="Enter name of restaurant">
+                        <datalist class="form-control" id="restarnat_names">
+                            {% for restaurant in restaurants %}
+                            <option value="{{ restaurant }}"> {{ restaurant }}</option>
+                            {% endfor %}
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Delivery rating</label>
+                        <input type="number" class="form-control" id="delivery_rating" name="delivery_rating"
+                            min="0" max="5" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Taste rating</label>
+                        <input type="number" class="form-control" id="taste_rating" name="taste_rating"
+                            min="0" max="5" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Spiciness rating</label>
+                        <input type="number" class="form-control" id="spiciness_rating" name="spiciness_rating"
+                            min="0" max="5" value="0">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lunch URL</label>
+                        <input type="url" class="form-control" id="website" name="website"
+                            placeholder="Enter lunch URL">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
