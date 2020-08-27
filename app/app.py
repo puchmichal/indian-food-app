@@ -3,8 +3,8 @@ from statistics import mean
 
 from flask import Flask, render_template, flash, request
 from flask_migrate import Migrate
-
 from flask_sqlalchemy import SQLAlchemy
+from flask_user import UserManager, roles_required
 
 from werkzeug.utils import redirect
 
@@ -15,7 +15,10 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app.models import Restaurant, Rating
+
+from app.models import Restaurant, Rating, User
+
+user_manager = UserManager(app, db, User)
 
 
 @app.route("/")
@@ -97,6 +100,12 @@ def add_rating():
         restaurant_in_database = ["No restaurant added yet."]
 
     return render_template("form.html", title="Add Visit", restaurants=restaurant_in_database)
+
+
+@app.route("/admin_panel")
+@roles_required(["Admin"])
+def admin_page():
+    return "You are admin!"
 
 
 if __name__ == "__main__":
