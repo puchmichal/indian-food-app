@@ -5,22 +5,24 @@
     https://devcenter.heroku.com/articles/getting-started-with-python#set-up
 
 2) create and activate virtual enviroment then install the dependencies:\
-    pip install -r requirements.txt\
+    pip install -r requirements.txt
 
-2a) install developer dependecies:\
-    pip install -r requirements.dev.txt\
+3) install developer dependecies:\
+    pip install -r requirements.dev.txt
 
-3) create local instance of database:\
+4\) create local instance of database:\
     flask db init\
     flask db migrate\
-    flask db upgrade\
+    flask db upgrade
 
-    or:\
+    or:
 
     python manage.py db init\
     python manage.py db migrate\
     python manage.py db upgrade
-4) run app by command:\
+
+5) run app by command:\
     heroku local web \
     or:\
-    flask run\
+
+    flask run
