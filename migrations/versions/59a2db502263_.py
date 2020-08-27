@@ -31,7 +31,10 @@ def upgrade():
         sa.Column("taste", sa.Float(), nullable=True),
         sa.Column("delivery", sa.Float(), nullable=True),
         sa.Column("restaurant_id", sa.Integer(), nullable=True),
-        sa.ForeignKeyConstraint(["restaurant_id"], ["restaurant.id"],),
+        sa.ForeignKeyConstraint(
+            ["restaurant_id"],
+            ["restaurant.id"],
+        ),
         sa.PrimaryKeyConstraint("id"),
     )
     # ### end Alembic commands ###
