@@ -4,9 +4,12 @@ from app.app import db
 
 
 class Rating(db.Model):
+    __tablename__ = "rating"
+
     id = db.Column(db.Integer, primary_key=True)
     taste = db.Column(db.Float)
     delivery = db.Column(db.Float)
+    spiciness = db.Column(db.Float)
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurant.id"))
 
     def __repr__(self):
