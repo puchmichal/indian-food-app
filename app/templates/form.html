@@ -18,7 +18,7 @@
                         <input list="restarnat_names" name="name" id="name", placeholder="Enter name of restaurant">
                         <datalist class="form-control" id="restarnat_names">
                             {% for restaurant in restaurants %}
-                            <option value={{ restaurant }}>
+                            <option value="{{ restaurant }}"> {{ restaurant }}</option>
                             {% endfor %}
                         </datalist>
                     </div>

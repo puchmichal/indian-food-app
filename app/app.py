@@ -8,7 +8,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from werkzeug.utils import redirect
 
-from app.forms import NewRatingForm
 
 app = Flask(__name__)
 app.config.from_object(os.environ.get("APP_SETTINGS",  "config.Config"))
@@ -19,7 +18,7 @@ migrate = Migrate(app, db)
 from app.models import Restaurant, Rating
 
 
-@app.route('/')
+@app.route("/")
 def get_all_restaurants():
     restaurants = db.session.query(Restaurant)
 
