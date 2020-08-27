@@ -12,7 +12,7 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-from app.models import Restaurant, User
+from app.models import Restaurant, Role, User
 
 user_manager = UserManager(app, db, User)
 
@@ -38,10 +38,17 @@ def get_all_restaurants():
     )
 
 
-@app.route("/admin_panel")
-@roles_required(["Admin"])
+@app.route("/admin_panel", methods=["GET"])
+# @roles_required(["Admin"])  # temporarly
 def admin_page():
-    return "You are admin!"
+    # if request.method == "GET":
+    users = [user.username for user in db.session.query(User)]
+    roles = [user.roles for user in db.session.query(Role)]
+
+    if not users:
+        return "Empty!"
+
+    return "/n".join(users)
 
 
 if __name__ == "__main__":
