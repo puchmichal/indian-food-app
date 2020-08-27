@@ -22,7 +22,8 @@
     python manage.py db upgrade
 
 5) run app by command:\
-    heroku local web \
-    or:\
+    heroku local web 
+
+    or:
 
     flask run
