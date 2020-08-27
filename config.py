@@ -14,6 +14,7 @@ class LocalConfig(object):
     USER_REQUIRE_RETYPE_PASSWORD = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 class ProductionConfig(object):
     TESTING = False
     CSRF_ENABLED = True
