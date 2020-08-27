@@ -11,9 +11,16 @@
     pip install -r requirements.dev.txt\
 
 3) create local instance of database:\
+    flask db init\
+    flask db migrate\
+    flask db upgrade\
+
+    or:\
+
     python manage.py db init\
     python manage.py db migrate\
-    python manage.py db upgrade\
-
+    python manage.py db upgrade
 4) run app by command:\
-    heroku local web 
+    heroku local web \
+    or:\
+    flask run\
