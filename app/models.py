@@ -1,3 +1,5 @@
+from flask_user import UserMixin
+
 from app.app import db
 
 
@@ -20,3 +22,31 @@ class Restaurant(db.Model):
 
     def __repr__(self):
         return f"Restaurant {self.name}"
+
+
+class User(db.Model, UserMixin):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(100), nullable=False, unique=True)
+    password = db.Column(db.String(255), nullable=False, server_default="")
+    active = db.Column(db.Boolean(), nullable=False, server_default="0")
+    roles = db.relationship("Role", secondary="user_roles")
+
+    def __repr__(self):
+        return f"User {self.username}"
+
+
+class Role(db.Model):
+    __tablename__ = "roles"
+
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+
+class UserRoles(db.Model):
+    __tablename__ = "user_roles"
+
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey("users.id", ondelete="CASCADE"))
+    role_id = db.Column(db.Integer(), db.ForeignKey("roles.id", ondelete="CASCADE"))
