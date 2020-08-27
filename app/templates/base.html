@@ -1,0 +1,27 @@
+<html>
+    <head>
+        {% if title %}
+        <title>{{ title }} - WM-HINDUS</title>
+        {% else %}
+        <title>Welcome to WM-HINDUS!</title>
+        {% endif %}
+    </head>
+    <body>
+        <div>
+            WM-Hindus:
+            <a href="/">Leader Board</a>
+            <a href="/add_visit">Add Visit</a>
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            {{ message }}<br>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </body>
+</html>
