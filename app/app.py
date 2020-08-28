@@ -39,7 +39,8 @@ def get_all_restaurants():
             "delivery_rating": mean([rating.delivery for rating in restaurant.ratings]),
             "spiciness_rating": mean([rating.spiciness for rating in restaurant.ratings]),
         }
-        for restaurant in restaurants if not restaurant.want_to_go
+        for restaurant in restaurants
+        if not restaurant.want_to_go
     ]
 
     return render_template("leaderboard.html", title="Leader Board", restaurants=restaurants_list)
@@ -76,12 +77,17 @@ def add_rating():
         )
 
         if len(restaurant_in_database) == 0:
-            restaurant = Restaurant(name=request.form.get("name"), url=request.form.get("url"), want_to_go=False)
+            restaurant = Restaurant(
+                name=request.form.get("name"), url=request.form.get("url"), want_to_go=False
+            )
             db.session.add(restaurant)
             db.session.commit()
             restaurant_in_database = list(
                 db.session.query(Restaurant).filter_by(name=request.form.get("name"))
             )
+        elif restaurant_in_database[0].want_to_go:
+            restaurant_in_database[0].want_to_go = False
+            db.session.commit()
 
         restaurant_id = restaurant_in_database[0].id
 
@@ -124,9 +130,7 @@ def add_want_to_go():
                 feedback=feedback,
             )
 
-        restaurant_in_database = [
-            restaurant.name for restaurant in db.session.query(Restaurant)
-        ]
+        restaurant_in_database = [restaurant.name for restaurant in db.session.query(Restaurant)]
 
         if request.form.get("name") in restaurant_in_database:
             feedback = f"You already have been in: {', '.join(missing)}"
@@ -137,7 +141,9 @@ def add_want_to_go():
                 feedback=feedback,
             )
 
-        restaurant = Restaurant(name=request.form.get("name"), url=request.form.get("url"), want_to_go=True)
+        restaurant = Restaurant(
+            name=request.form.get("name"), url=request.form.get("website"), want_to_go=True
+        )
         db.session.add(restaurant)
         db.session.commit()
 
@@ -157,20 +163,16 @@ def want_to_go():
     restaurants_list = [
         {
             "name": restaurant.name,
-            "general_rating": mean(
-                [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
-            ),
-            "taste_rating": mean([rating.taste for rating in restaurant.ratings]),
-            "delivery_rating": mean([rating.delivery for rating in restaurant.ratings]),
+            "url": restaurant.url,
         }
-        for restaurant in restaurants if restaurant.want_to_go
+        for restaurant in restaurants
+        if restaurant.want_to_go
     ]
 
     if len(restaurants_list) == 0:
         return "No restaurants to want to go to :C"
 
     return render_template("show_want_to_go.html", title="Want to go", restaurants=restaurants_list)
-
 
 
 @app.route("/admin_panel")
