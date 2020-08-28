@@ -1,3 +1,6 @@
+{% extends 'bootstrap/base.html' %}
+
+
 <html>
     <head>
         {% if title %}
@@ -7,12 +10,27 @@
         {% endif %}
     </head>
     <body>
-        <div>
-            WM-Hindus:
-            <a href="/">Leader Board</a>
-            <a href="/add_visit">Add Visit</a>
-        </div>
-        <hr>
+    {% block navbar %}
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">WM-Hindus</a>
+                </div>
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Leader Board</a></li>
+                        <li><a href="/add_visit">Add Visist</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    {% endblock %}
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <ul>

@@ -15,8 +15,8 @@
                     {% endif %}
                     <div class="form-group">
                         <label>Restaurant name</label>
-                        <input list="restarnat_names" name="name" id="name", placeholder="Enter name of restaurant">
-                        <datalist class="form-control" id="restarnat_names">
+                        <input list="restarnat_names" value="" name="name" id="name" placeholder="Enter name of restaurant"  class="form-control">
+                        <datalist id="restarnat_names">
                             {% for restaurant in restaurants %}
                             <option value="{{ restaurant }}"> {{ restaurant }}</option>
                             {% endfor %}
