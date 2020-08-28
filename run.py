@@ -1,5 +1,6 @@
 import os
 
+import settings
 from app.app import app
 
 
