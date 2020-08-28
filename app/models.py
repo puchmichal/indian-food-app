@@ -21,6 +21,8 @@ class Restaurant(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64), index=True, unique=True)
+    url = db.Column(db.String(255))
+    want_to_go = db.Column(db.Boolean)
     ratings = db.relationship("Rating", backref="score", lazy="dynamic")
 
     def __repr__(self):

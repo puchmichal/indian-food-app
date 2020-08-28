@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+    <h1>Leader board</h1>
+    {% for restaurant in restaurants %}
+    <div><p>{{ restaurant["name"] }} with General Rating: <b>{{ restaurant["general_rating"] }}</b> , Taste Rating: {{ restaurant["taste_rating"] }} and Delivery Rating: {{ restaurant["delivery_rating"] }}</p></div>
+    {% endfor %}
+{% endblock %}
