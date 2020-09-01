@@ -137,3 +137,5 @@ pyproject.toml
 
 # VSCode stuff
 .vscode/
+
+app.db
