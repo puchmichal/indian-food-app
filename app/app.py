@@ -1,13 +1,15 @@
 import os
 from statistics import mean
 
-from flask import Flask, flash, render_template, request
+from flask import Flask, render_template, flash, request
+from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserManager, login_required, roles_required, user_registered
 from werkzeug.utils import redirect
 
 app = Flask(__name__)
+bootstrap = Bootstrap(app)
 app.config.from_object(os.environ.get("APP_CONFIG"))
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -52,6 +54,7 @@ def get_all_restaurants():
             ),
             "taste_rating": mean([rating.taste for rating in restaurant.ratings]),
             "delivery_rating": mean([rating.delivery for rating in restaurant.ratings]),
+            "spiciness_rating": mean([rating.spiciness for rating in restaurant.ratings]),
         }
         for restaurant in restaurants
     ]
