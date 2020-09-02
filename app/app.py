@@ -5,10 +5,8 @@ from flask import Flask, render_template, flash, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, roles_required
-
+from flask_user import UserManager, login_required, roles_required, user_registered
 from werkzeug.utils import redirect
-
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -17,9 +15,28 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 
-from app.models import Restaurant, Rating, User
+from app.models import Rating, Restaurant, Role, User
 
 user_manager = UserManager(app, db, User)
+
+
+@user_registered.connect_via(app)
+def _after_user_registered_hook(sender, user, **extra):
+    """This function add default 'User' role to every new registrated guest."""
+
+    default_role = Role.query.filter_by(name="User").first()
+    admin_role = Role.query.filter_by(name="Admin").first()
+
+    if not default_role:
+        default_role = Role(name="User")
+
+    if not admin_role:
+        admin_role = Role(name="Admin")
+
+    user.roles.append(default_role)
+    db.session.add(default_role)
+    db.session.add(admin_role)
+    db.session.commit()
 
 
 @app.route("/")
@@ -47,6 +64,7 @@ def get_all_restaurants():
 
 
 @app.route("/add_visit", methods=["GET", "POST"])
+@login_required
 def add_rating():
     if request.method == "POST":
         # validate form
@@ -175,10 +193,29 @@ def want_to_go():
     return render_template("show_want_to_go.html", title="Want to go", restaurants=restaurants_list)
 
 
-@app.route("/admin_panel")
-@roles_required(["Admin"])
+@app.route("/admin_panel", methods=["GET", "POST"])
+@roles_required(["Admin", "User"])
 def admin_page():
-    return "You are admin!"
+
+    if request.method == "GET":
+        user_data = {}
+
+        for user in db.session.query(User):
+            roles = [role.name for role in user.roles]
+            user_data[user.username] = {"User": "User" in roles, "Admin": "Admin" in roles}
+
+        return render_template("users.html", title="Admin Panel", users=user_data)
+
+    else:
+        for username, role in request.form.items():
+            user_in_db = db.session.query(User).filter_by(username=username).first()
+
+            if role not in user_in_db.roles:
+                role_in_db = db.session.query(Role).filter_by(name=role).first()
+                user_in_db.roles.append(role_in_db)
+                db.session.commit()
+
+        return redirect("/")
 
 
 if __name__ == "__main__":
