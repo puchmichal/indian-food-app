@@ -7,25 +7,30 @@
 <div class=container>
     <h1>Leader board</h1>
     <hr>
-    <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="leader_board"
-           width=100%>
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+
+    <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="leader_board" width=100%>
         <thead>
-        <tr>
-            <th>Restaurant's name
-            <th>General Rating
-            <th>Taste Rating
-            <th>Delivery Rating
-            <th>Spiciness Rating
+            <tr>
+                <th>Restaurant's name</th>
+                <th>General Rating</th>
+                <th>Taste Rating</th>
+                <th>Delivery Rating</th>
+                <th>Spiciness Rating</th>
+            </tr>
+        </thead>
 
         <tbody>
         {% for restaurant in restaurants %}
-        <tr>
-            <td>{{ restaurant["name"] }}
-            <td>{{ restaurant["general_rating"] }}
-            <td>{{ restaurant["taste_rating"] }}
-            <td>{{ restaurant["delivery_rating"] }}
-            <td>{{ restaurant["spiciness_rating"] }}
+            <tr>
+                <td>{{ restaurant["name"] }}</td>
+                <td>{{ restaurant["general_rating"] }}</td>
+                <td>{{ restaurant["taste_rating"] }}</td>
+                <td>{{ restaurant["delivery_rating"] }}</td>
+                <td>{{ restaurant["spiciness_rating"] }}</td>
+            </tr>
         {% endfor %}
+        </tbody>
     </table>
 </div>
 
