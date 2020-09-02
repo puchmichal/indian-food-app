@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <h1>Add Want To Go Restaurant</h1>
+                <hr>
+
+                <form action="/add_want_to_go" method="POST">
+                    {% if feedback %}
+                        <p class="text-danger float-right">{{ feedback }}</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <label>Restaurant name</label>
+                        <input type="text" name="name" id="name" placeholder="Enter name of restaurant",  class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Lunch URL</label>
+                        <input type="url" class="form-control" id="website" name="website"
+                            placeholder="Enter lunch URL">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">I want to go there!</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

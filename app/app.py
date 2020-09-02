@@ -57,6 +57,7 @@ def get_all_restaurants():
             "spiciness_rating": mean([rating.spiciness for rating in restaurant.ratings]),
         }
         for restaurant in restaurants
+        if not restaurant.want_to_go
     ]
 
     return render_template("leaderboard.html", title="Leader Board", restaurants=restaurants_list)
@@ -89,19 +90,24 @@ def add_rating():
             )
 
         # add data to database
-        restaurant_in_database = list(
-            db.session.query(Restaurant).filter_by(name=request.form.get("name"))
+        restaurant_in_database = (
+            db.session.query(Restaurant).filter_by(name=request.form.get("name")).first()
         )
 
-        if len(restaurant_in_database) == 0:
-            restaurant = Restaurant(name=request.form.get("name"))
+        if not restaurant_in_database:
+            restaurant = Restaurant(
+                name=request.form.get("name"), url=request.form.get("url"), want_to_go=False
+            )
             db.session.add(restaurant)
             db.session.commit()
-            restaurant_in_database = list(
-                db.session.query(Restaurant).filter_by(name=request.form.get("name"))
+            restaurant_in_database = (
+                db.session.query(Restaurant).filter_by(name=request.form.get("name")).first()
             )
+        elif restaurant_in_database[0].want_to_go:
+            restaurant_in_database[0].want_to_go = False
+            db.session.commit()
 
-        restaurant_id = restaurant_in_database[0].id
+        restaurant_id = restaurant_in_database.id
 
         rating = Rating(
             taste=request.form.get("taste_rating"),
@@ -112,7 +118,7 @@ def add_rating():
         db.session.add(rating)
         db.session.commit()
 
-        flash("Visit in restauarant {} has been added 🕉".format(request.form.get("name")))
+        flash("Visit in restaurant {} has been added 🕉".format(request.form.get("name")))
         return redirect("/")
 
     restaurant_in_database = [restaurant.name for restaurant in db.session.query(Restaurant)]
@@ -120,6 +126,72 @@ def add_rating():
         restaurant_in_database = ["No restaurant added yet."]
 
     return render_template("form.html", title="Add Visit", restaurants=restaurant_in_database)
+
+
+@app.route("/add_want_to_go", methods=["GET", "POST"])
+@login_required
+def add_want_to_go():
+    if request.method == "POST":
+        # validate form
+        req = request.form
+        missing = list()
+
+        for k, v in req.items():
+            if v == "":
+                missing.append(k)
+
+        if missing:
+            feedback = f"Please fill fields: {', '.join(missing)}"
+
+            return render_template(
+                "add_want_to_go.html",
+                title="Add Want To Go",
+                feedback=feedback,
+            )
+
+        restaurant_in_database = [restaurant.name for restaurant in db.session.query(Restaurant)]
+
+        if request.form.get("name") in restaurant_in_database:
+            feedback = f"You already have been in: {', '.join(missing)}"
+
+            return render_template(
+                "form.html",
+                title="Add Visit",
+                feedback=feedback,
+            )
+
+        restaurant = Restaurant(
+            name=request.form.get("name"), url=request.form.get("website"), want_to_go=True
+        )
+        db.session.add(restaurant)
+        db.session.commit()
+
+        flash("Restaurant {} was added as want to go".format(request.form.get("name")))
+        return redirect("/want_to_go")
+
+    return render_template("add_want_to_go.html", title="Add Want To Go")
+
+
+@app.route("/want_to_go")
+def want_to_go():
+    restaurants = db.session.query(Restaurant)
+
+    if not restaurants:
+        return "No ratings by now :C"
+
+    restaurants_list = [
+        {
+            "name": restaurant.name,
+            "url": restaurant.url,
+        }
+        for restaurant in restaurants
+        if restaurant.want_to_go
+    ]
+
+    if len(restaurants_list) == 0:
+        return "No restaurants to want to go to :C"
+
+    return render_template("show_want_to_go.html", title="Want to go", restaurants=restaurants_list)
 
 
 @app.route("/admin_panel", methods=["GET", "POST"])

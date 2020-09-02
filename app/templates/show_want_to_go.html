@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class=container>
+    <h1>Restaurants you want to go to!</h1>
+    <hr>
+    <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="want_to_go"
+           width=100%>
+        <thead>
+        <tr>
+            <th>Restaurant's name
+            <th>Lunch URL
+
+        <tbody>
+        {% for restaurant in restaurants %}
+        <tr>
+            <td>{{ restaurant["name"] }}
+            <td>{{ restaurant["url"] }}
+
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock %}
+
