@@ -129,6 +129,7 @@ def add_rating():
 
 
 @app.route("/add_want_to_go", methods=["GET", "POST"])
+@login_required
 def add_want_to_go():
     if request.method == "POST":
         # validate form
