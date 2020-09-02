@@ -90,24 +90,24 @@ def add_rating():
             )
 
         # add data to database
-        restaurant_in_database = list(
-            db.session.query(Restaurant).filter_by(name=request.form.get("name"))
+        restaurant_in_database = (
+            db.session.query(Restaurant).filter_by(name=request.form.get("name")).first()
         )
 
-        if len(restaurant_in_database) == 0:
+        if not restaurant_in_database:
             restaurant = Restaurant(
                 name=request.form.get("name"), url=request.form.get("url"), want_to_go=False
             )
             db.session.add(restaurant)
             db.session.commit()
-            restaurant_in_database = list(
-                db.session.query(Restaurant).filter_by(name=request.form.get("name"))
+            restaurant_in_database = (
+                db.session.query(Restaurant).filter_by(name=request.form.get("name")).first()
             )
         elif restaurant_in_database[0].want_to_go:
             restaurant_in_database[0].want_to_go = False
             db.session.commit()
 
-        restaurant_id = restaurant_in_database[0].id
+        restaurant_id = restaurant_in_database.id
 
         rating = Rating(
             taste=request.form.get("taste_rating"),

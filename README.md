@@ -10,26 +10,19 @@
 1. install developer dependencies:\
     `pip install -r requirements.dev.txt`
     
-1. If running flask commands:
-
-    1. On Linux:\
-    `export FLASK_APP=run.py`
-    
-    2. On Windows:\
-    `set FLASK_APP=run.py`
 
 1. create local instance of database:
     ```bash
-    flask db init\
-    flask db migrate\
+    flask db init
+    flask db migrate
     flask db upgrade
     ```
 
     or:
     
    ```bash
-    python manage.py db init\
-    python manage.py db migrate\
+    python manage.py db init
+    python manage.py db migrate
     python manage.py db upgrade
     ```
     
