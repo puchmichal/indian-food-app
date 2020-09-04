@@ -5,8 +5,7 @@ from flask import Flask, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import (UserManager, login_required, roles_required,
-                        user_registered)
+from flask_user import UserManager, login_required, roles_required, user_registered
 from werkzeug.utils import redirect
 
 app = Flask(__name__)
