@@ -1,14 +1,15 @@
 import os
 from statistics import mean
 
-from flask import Flask, render_template, flash, request
+from flask import Flask, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, login_required, roles_required, user_registered
+from flask_user import (UserManager, login_required, roles_required,
+                        user_registered)
 from werkzeug.utils import redirect
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./static")
 bootstrap = Bootstrap(app)
 app.config.from_object(os.environ.get("APP_CONFIG"))
 db = SQLAlchemy(app)

@@ -24,10 +24,20 @@
         {% for restaurant in restaurants %}
             <tr>
                 <td>{{ restaurant["name"] }}</td>
+
+                <td>
+                    <div class="rating">
+                        <div class="empty-stars"></div>
+                        <div class="full-stars" style="width:70%"></div>
+                    </div>
+                </td>
+
                 <td>{{ restaurant["general_rating"] }}</td>
-                <td>{{ restaurant["taste_rating"] }}</td>
-                <td>{{ restaurant["delivery_rating"] }}</td>
-                <td>{{ restaurant["spiciness_rating"] }}</td>
+
+                <td>{{ "\U0001F35B" * (restaurant["taste_rating"] | int) }}</td>
+                <td>{{ "\U0001F4E6" * (restaurant["delivery_rating"] | int) }}</td>
+                <td>{{ "\U0001F336" * (restaurant["spiciness_rating"] | int) }}</td>
+
             </tr>
         {% endfor %}
         </tbody>
