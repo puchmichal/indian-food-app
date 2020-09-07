@@ -197,9 +197,9 @@ def want_to_go():
 
 @app.route("/admin_panel", methods=["GET", "POST"])
 @roles_required(["Admin", "User"])
-def admin_page():
-
+def admin_panel():
     if request.method == "GET":
+
         user_data = {}
 
         for user in db.session.query(User):
@@ -207,17 +207,31 @@ def admin_page():
             user_data[user.username] = {"User": "User" in roles, "Admin": "Admin" in roles}
 
         return render_template("users.html", title="Admin Panel", users=user_data)
-
     else:
-        for username, role in request.form.items():
-            user_in_db = db.session.query(User).filter_by(username=username).first()
+        users = db.session.query(User)
+        user_role = db.session.query(Role).filter_by(name="User").first()
+        admin_role = db.session.query(Role).filter_by(name="Admin").first()
 
-            if role not in user_in_db.roles:
-                role_in_db = db.session.query(Role).filter_by(name=role).first()
-                user_in_db.roles.append(role_in_db)
-                db.session.commit()
+        available_roles = [user_role, admin_role]
 
-        return redirect("/")
+        for user in users:
+            for role in available_roles:
+
+                role_in_db = role in user.roles
+                role_in_form = user.username + "_is_" + role.name in request.form.keys()
+
+                if role_in_form and not role_in_db:
+                    user.roles.append(role)
+                    db.session.commit()
+
+                elif not role_in_form and role_in_db:
+                    user.roles.remove(role)
+                    db.session.commit()
+
+                else:
+                    continue
+
+        return redirect("/admin_panel")
 
 
 if __name__ == "__main__":

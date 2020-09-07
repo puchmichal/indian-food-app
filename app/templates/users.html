@@ -2,50 +2,53 @@
 
 
 {% block content %}
-    <div class="container">
-        <h1>Admin Panel</h1>
-        <h3>Users:</h3>
-        <table style="width:50">
-            <tr>
-                <th> Username </th>
-                <th> User </th>
-                <th> Admin </th>
-            </tr>
 
+
+<div class="container">
+    <h1>Admin Panel</h1>
+    <hr>
+        <table cellspacing=0 class="table table-bordered table-hover table-striped" id="user_and_roles" width=100%>
+            <thead>
+                <tr>
+                    <th> Username </th>
+                    <th> User </th>
+                    <th> Admin </th>
+                </tr>
+            </thead>
             <form action="/admin_panel" method="POST">
-
                 {% for username, roles in users.items() %}
-                    <tr>
-                        <th>
-                            {{ username }} 
-                        </th>
-                        <th>
-                            <div class="form-check">
-                                <input class="form-check-input" 
-                                    type="checkbox"
-                                    value="User"
-                                    id="User" 
-                                    name={{ username }} 
-                                    {% if roles["User"] %}checked{% endif %}>
-                            </div>
-                        </th>
-                        <th>
-                            <div class="form-check">
+                    <tbody>
+                        <tr>
+                            <td>
+                                {{ username }} 
+                            </td>
 
-                                <input class="form-check-input" 
-                                    type="checkbox"
-                                    value="Admin"
-                                    id="Admin" 
-                                    name={{ username }} 
-                                    {% if roles["Admin"] %}checked{% endif %}>
+                            <td align="center">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                        type="checkbox"
+                                        value="User"
+                                        id="User" 
+                                        name={{ username + "_is_User" }} 
+                                        {% if roles["User"] %}checked{% endif %}>
+                                </div>
+                            </td>
 
-                            </div>
-                        </th>
-                    </tr>
+                            <td align="center">
+                                <div class="form-check">
+                                    <input class="form-check-input" 
+                                        type="checkbox"
+                                        value="Admin"
+                                        id="Admin" 
+                                        name={{ username + "_is_Admin" }} 
+                                        {% if roles["Admin"] %}checked{% endif %}>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 {% endfor %}
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </table>
-    </div>
+            </table>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 {% endblock %}
