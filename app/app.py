@@ -9,7 +9,7 @@ from flask_user import (UserManager, login_required, roles_required,
                         user_registered)
 from werkzeug.utils import redirect
 
-app = Flask(__name__, static_folder="./static")
+app = Flask(__name__)
 bootstrap = Bootstrap(app)
 app.config.from_object(os.environ.get("APP_CONFIG"))
 db = SQLAlchemy(app)
