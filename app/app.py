@@ -100,8 +100,8 @@ def add_rating():
             restaurant_in_database = (
                 db.session.query(Restaurant).filter_by(name=request.form.get("name")).first()
             )
-        elif restaurant_in_database[0].want_to_go:
-            restaurant_in_database[0].want_to_go = False
+        elif restaurant_in_database.want_to_go:
+            restaurant_in_database.want_to_go = False
             db.session.commit()
 
         restaurant_id = restaurant_in_database.id
