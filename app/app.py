@@ -182,9 +182,6 @@ def want_to_go():
         if restaurant.want_to_go
     ]
 
-    if len(restaurants_list) == 0:
-        return "No restaurants to want to go to :C"
-
     return render_template("show_want_to_go.html", title="Want to go", restaurants=restaurants_list)
 
 
