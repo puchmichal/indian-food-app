@@ -43,9 +43,6 @@ def _after_user_registered_hook(sender, user, **extra):
 def get_all_restaurants():
     restaurants = db.session.query(Restaurant)
 
-    if not restaurants:
-        return "No ratings by now :C"
-
     restaurants_list = [
         {
             "name": restaurant.name,
@@ -176,9 +173,6 @@ def add_want_to_go():
 def want_to_go():
     restaurants = db.session.query(Restaurant)
 
-    if not restaurants:
-        return "No ratings by now :C"
-
     restaurants_list = [
         {
             "name": restaurant.name,
@@ -187,9 +181,6 @@ def want_to_go():
         for restaurant in restaurants
         if restaurant.want_to_go
     ]
-
-    if len(restaurants_list) == 0:
-        return "No restaurants to want to go to :C"
 
     return render_template("show_want_to_go.html", title="Want to go", restaurants=restaurants_list)
 
