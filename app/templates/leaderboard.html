@@ -29,6 +29,7 @@
 
                 <td>
                     <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["general_rating"] }}</script>
                         <div class="empty-stars"></div>
                         <div class="full-stars" style="width: {{ (restaurant["general_rating"] / 0.05) | int }}%">
                         </div>
@@ -36,6 +37,7 @@
                 </td>
                 <td>
                     <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["taste_rating"] }}</script>
                         <div class="empty-stars"></div>
                         <div class="full-stars" style="width: {{ (restaurant["taste_rating"] / 0.05) | int }}%">
                         </div>
@@ -43,6 +45,7 @@
                 </td>
                 <td>
                     <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["delivery_rating"] }}</script>
                         <div class="empty-stars"></div>
                         <div class="full-stars" style="width: {{ (restaurant["delivery_rating"] / 0.05) | int }}%">
                         </div>
@@ -51,6 +54,7 @@
 
                 <td>
                     <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["spiciness_rating"] }}</script>
                         <div class="empty-peppers"></div>
                         <div class="full-peppers" style="width: {{ (restaurant["spiciness_rating"] / 0.05) | int }}%">
                         </div>
