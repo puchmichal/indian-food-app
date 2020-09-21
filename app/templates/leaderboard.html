@@ -23,7 +23,11 @@
         <tbody>
         {% for restaurant in restaurants %}
             <tr>
-                <td>{{ restaurant["name"] }}</td>
+                <td>
+                    <a href="{{ url_for("restaurant_profile", restaurant_id=restaurant["id"]) }}">
+                    {{ restaurant["name"] }}
+                    </a>
+                </td>
                 <td>{{ restaurant["general_rating"] }}</td>
                 <td>{{ restaurant["taste_rating"] }}</td>
                 <td>{{ restaurant["delivery_rating"] }}</td>

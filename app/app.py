@@ -1,11 +1,12 @@
 import os
 from statistics import mean
 
-from flask import Flask, flash, render_template, request
+from flask import Flask, Response, abort, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, login_required, roles_required, user_registered
+from flask_user import (UserManager, login_required, roles_required,
+                        user_registered)
 from werkzeug.utils import redirect
 
 app = Flask(__name__)
@@ -45,6 +46,7 @@ def get_all_restaurants():
 
     restaurants_list = [
         {
+            "id": restaurant.id,
             "name": restaurant.name,
             "general_rating": mean(
                 [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
@@ -58,6 +60,20 @@ def get_all_restaurants():
     ]
 
     return render_template("leaderboard.html", title="Leader Board", restaurants=restaurants_list)
+
+
+@app.route("/restaurant/<int:restaurant_id>")
+def restaurant_profile(restaurant_id: int = None):
+    restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).first()
+
+    if not restaurant:
+        abort(Response("Restaurant does not exist", 404))
+    else:
+        return render_template(
+            template_name_or_list="restaurant.html",
+            title="Restauran profile",
+            restaurant=restaurant,
+        )
 
 
 @app.route("/add_visit", methods=["GET", "POST"])
