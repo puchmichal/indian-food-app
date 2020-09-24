@@ -5,7 +5,8 @@ from flask import Flask, Response, abort, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, login_required, roles_required, user_registered
+from flask_user import (UserManager, login_required, roles_required,
+                        user_registered)
 from werkzeug.utils import redirect
 
 app = Flask(__name__)
@@ -65,6 +66,12 @@ def get_all_restaurants():
 def restaurant_profile(restaurant_id: int = None):
     restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).first()
 
+    ratings = {
+        "taste_rating": [rating.taste for rating in restaurant.ratings],
+        "delivery_rating": [rating.delivery for rating in restaurant.ratings],
+        "spiciness_rating": [rating.spiciness for rating in restaurant.ratings],
+    }
+
     if not restaurant:
         abort(Response("Restaurant does not exist", 404))
     else:
@@ -72,6 +79,7 @@ def restaurant_profile(restaurant_id: int = None):
             template_name_or_list="restaurant.html",
             title="Restauran profile",
             restaurant=restaurant,
+            ratings=ratings,
         )
 
 
