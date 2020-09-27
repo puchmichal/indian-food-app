@@ -2,7 +2,9 @@
 
 
 {% block content %}
-
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='leaderboard.css') }}"/>
+</head>
 
 <div class=container>
     <h1>Leader board</h1>
@@ -24,10 +26,41 @@
         {% for restaurant in restaurants %}
             <tr>
                 <td>{{ restaurant["name"] }}</td>
-                <td>{{ restaurant["general_rating"] }}</td>
-                <td>{{ restaurant["taste_rating"] }}</td>
-                <td>{{ restaurant["delivery_rating"] }}</td>
-                <td>{{ restaurant["spiciness_rating"] }}</td>
+
+                <td>
+                    <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["general_rating"] }}</script>
+                        <div class="empty-stars"></div>
+                        <div class="full-stars" style="width: {{ (restaurant["general_rating"] / 0.05) | int }}%">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["taste_rating"] }}</script>
+                        <div class="empty-stars"></div>
+                        <div class="full-stars" style="width: {{ (restaurant["taste_rating"] / 0.05) | int }}%">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["delivery_rating"] }}</script>
+                        <div class="empty-stars"></div>
+                        <div class="full-stars" style="width: {{ (restaurant["delivery_rating"] / 0.05) | int }}%">
+                        </div>
+                    </div>
+                </td>
+
+                <td>
+                    <div class="rating">
+                        <script type="text/plain" hidden>{{ restaurant["spiciness_rating"] }}</script>
+                        <div class="empty-peppers"></div>
+                        <div class="full-peppers" style="width: {{ (restaurant["spiciness_rating"] / 0.05) | int }}%">
+                        </div>
+                    </div>
+                </td>
+
             </tr>
         {% endfor %}
         </tbody>
