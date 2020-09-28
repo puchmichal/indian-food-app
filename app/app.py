@@ -5,7 +5,8 @@ from flask import Flask, Response, abort, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, login_required, roles_required, user_registered
+from flask_user import (UserManager, login_required, roles_required,
+                        user_registered)
 from werkzeug.utils import redirect
 
 app = Flask(__name__)
@@ -59,6 +60,14 @@ def get_all_restaurants():
     ]
 
     return render_template("leaderboard.html", title="Leader Board", restaurants=restaurants_list)
+
+
+@app.route("/profile")
+def profile():
+    return render_template(
+        template_name_or_list="profile.html",
+        title="Profile",
+    )
 
 
 @app.route("/restaurant/<int:restaurant_id>")
