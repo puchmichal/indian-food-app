@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class=container>
+    <h1>{{ restaurant.name }}</h1>
+    <hr>
+    <h3>
+        url: {{ restaurant.url }}
+    </h3>
+
+    <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="leader_board" width=100%>
+        <thead>
+            <tr>
+                <th>Taste Ratings</th>
+                <th>Delivery Ratings</th>
+                <th>Spiciness Ratings</th>
+                <th>Date</th>
+                <th>User</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for index in range(ratings["taste_rating"]|length) %}
+            <tr>
+                <td>{{ ratings["taste_rating"][index] }}</td>
+                <td>{{ ratings["delivery_rating"][index]}}</td>
+                <td>{{ ratings["spiciness_rating"][index] }}</td>
+                <td> Unknown </td>
+                <td> Unknown </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock %}
+

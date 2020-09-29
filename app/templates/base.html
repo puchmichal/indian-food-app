@@ -29,8 +29,13 @@
                         <li><a href="/want_to_go">Want To Go</a></li>
                         <li><a href="/add_want_to_go">Add Want To Go</a></li>
                     </ul>
+
+                    <a href= "{{ url_for("profile") }}">
+                        <img class="img" src="static/anon-icon.png" align="right"></img>
+                    </a>
                 </div>
             </div>
+
         </nav>
     {% endblock %}
         {% with messages = get_flashed_messages() %}
