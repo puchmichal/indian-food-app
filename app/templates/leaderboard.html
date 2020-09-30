@@ -25,8 +25,11 @@
         <tbody>
         {% for restaurant in restaurants %}
             <tr>
-                <td>{{ restaurant["name"] }}</td>
-
+                <td>
+                    <a href="{{ url_for("restaurant_profile", restaurant_id=restaurant["id"]) }}">
+                        {{ restaurant["name"] }}
+                    </a>
+                </td>
                 <td>
                     <div class="rating">
                         <script type="text/plain" hidden>{{ restaurant["general_rating"] }}</script>
