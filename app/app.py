@@ -96,6 +96,11 @@ def restaurant_profile(restaurant_id: int = None):
         "taste_rating": [rating.taste for rating in restaurant.ratings],
         "delivery_rating": [rating.delivery for rating in restaurant.ratings],
         "spiciness_rating": [rating.spiciness for rating in restaurant.ratings],
+        "date": [rating.date for rating in restaurant.ratings],
+        "user": [
+            db.session.query(User).filter_by(id=rating.rate_by).first()
+            for rating in restaurant.ratings
+        ],
     }
 
     if not restaurant:

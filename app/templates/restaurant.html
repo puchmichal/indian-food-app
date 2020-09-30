@@ -8,7 +8,7 @@
     <h1>{{ restaurant.name }}</h1>
     <hr>
     <h3>
-        url: {{ restaurant.url }}
+        url: <a href="{{ restaurant.url }}">{{ restaurant.url }}</a>
     </h3>
 
     <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="leader_board" width=100%>
@@ -28,8 +28,8 @@
                 <td>{{ ratings["taste_rating"][index] }}</td>
                 <td>{{ ratings["delivery_rating"][index]}}</td>
                 <td>{{ ratings["spiciness_rating"][index] }}</td>
-                <td> Unknown </td>
-                <td> Unknown </td>
+                <td>{{ ratings["date"][index] }}</td>
+                <td>{{ ratings["user"][index] }}</td>
             </tr>
         {% endfor %}
         </tbody>
