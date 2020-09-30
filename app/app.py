@@ -1,3 +1,4 @@
+import datetime
 import os
 from statistics import mean
 
@@ -5,8 +6,11 @@ from flask import Flask, Response, abort, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, login_required, roles_required, user_registered
+from flask_user import (UserManager, current_user, login_required,
+                        roles_required, user_registered)
 from werkzeug.utils import redirect
+
+from .util import format_date
 
 app = Flask(__name__)
 bootstrap = Bootstrap(app)
@@ -62,10 +66,25 @@ def get_all_restaurants():
 
 
 @app.route("/profile")
+@login_required
 def profile():
+    ratings = db.session.query(Rating).filter_by(rate_by=current_user.id)
+
+    ratings_data = {
+        "restaurant_name": [
+            db.session.query(Restaurant).filter_by(id=rating.restaurant_id).first().name
+            for rating in ratings
+        ],
+        "taste": [rating.taste for rating in ratings],
+        "delivery": [rating.delivery for rating in ratings],
+        "spiciness": [rating.spiciness for rating in ratings],
+        "date": [format_date(rating.date) for rating in ratings],
+    }
+
     return render_template(
         template_name_or_list="profile.html",
         title="Profile",
+        ratings_data=ratings_data,
     )
 
 
@@ -141,6 +160,8 @@ def add_rating():
             delivery=request.form.get("delivery_rating"),
             spiciness=request.form.get("spiciness_rating"),
             restaurant_id=restaurant_id,
+            rate_by=current_user.id,
+            date=datetime.datetime.today().strftime("%Y%m%d"),
         )
         db.session.add(rating)
         db.session.commit()

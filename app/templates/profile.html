@@ -4,9 +4,33 @@
 {% block content %}
 
 <div class=container>
-    <h2>Your profile:</h2>
+
+    <h3>Your Ratings:</h3><hr>
+
+    <script src="https://www.kryogenix.org/code/browser/sorttable/sorttable.js"></script>
+        <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="leader_board" width=60%>
+            <thead>
+                <tr>
+                    <th>Restaurant's name</th>
+                    <th>Taste Rating</th>
+                    <th>Delivery Rating</th>
+                    <th>Spiciness Rating</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for index in range(ratings_data["restaurant_name"]|length) %}
+                    <tr>
+                        <td> {{ ratings_data["restaurant_name"][index] }}</td>
+                        <td> {{ ratings_data["taste"][index]}} </td>
+                        <td> {{ ratings_data["delivery"][index] }} </td>
+                        <td> {{ ratings_data["spiciness"][index]}} </td>
+                        <td> {{ ratings_data["date"][index] }} </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 </div>
 
 {% endblock %}
-
-

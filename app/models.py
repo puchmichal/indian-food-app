@@ -11,6 +11,8 @@ class Rating(db.Model):
     delivery = db.Column(db.Float)
     spiciness = db.Column(db.Float)
     restaurant_id = db.Column(db.Integer, db.ForeignKey("restaurant.id"))
+    rate_by = db.Column(db.Integer)
+    date = db.Column(db.Integer)
 
     def __repr__(self):
         return "<Taste Rating {}, Delivery Rating {}>".format(self.taste, self.delivery)
