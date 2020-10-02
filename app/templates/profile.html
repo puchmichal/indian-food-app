@@ -22,7 +22,13 @@
             <tbody>
                 {% for index in range(ratings_data["restaurant_name"]|length) %}
                     <tr>
-                        <td> {{ ratings_data["restaurant_name"][index] }}</td>
+                        <td>
+                            <a href="{{ url_for("restaurant_profile",
+                                restaurant_id=ratings_data["id"][index]) }}">
+                                {{ ratings_data["restaurant_name"][index] }}
+                            </a>
+                        </td>
+
                         <td> {{ ratings_data["taste"][index]}} </td>
                         <td> {{ ratings_data["delivery"][index] }} </td>
                         <td> {{ ratings_data["spiciness"][index]}} </td>

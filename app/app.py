@@ -72,6 +72,10 @@ def profile():
     ratings = db.session.query(Rating).filter_by(rate_by=current_user.id)
 
     ratings_data = {
+        "id": [
+            db.session.query(Restaurant).filter_by(id=rating.restaurant_id).first().id
+            for rating in ratings
+        ],
         "restaurant_name": [
             db.session.query(Restaurant).filter_by(id=rating.restaurant_id).first().name
             for rating in ratings
