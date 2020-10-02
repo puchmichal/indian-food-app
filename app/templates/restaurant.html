@@ -3,36 +3,46 @@
 
 {% block content %}
 
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='restaurant.css') }}"/>
+</head>
 
 <div class=container>
-    <h1>{{ restaurant.name }}</h1>
-    <hr>
-    <h3>
-        url: <a href="{{ restaurant.url }}">{{ restaurant.url }}</a>
-    </h3>
+    <br>
+    <table cellspacing=0 class="table table-bordered table-striped" id="basi" width=40%>
+        <tr>
+            <th text-align: left;>
+                <h1>{{ name }}</h1>
+            </th>
 
-    <table cellspacing=0 class="table table-bordered table-hover table-striped sortable" id="leader_board" width=100%>
+            <th text-align: right;>
+                <h3> url: <a href="{{ url }}">{{ url }}</a> </h3>
+            </th>
+        </tr>
+    </table>
+
+    <br>
+    <br>
+    <br>
+
+    <table cellspacing=0 class="table table-bordered table-hover table-striped sortable"
+        id="restaurant info" width=40%>
         <thead>
             <tr>
-                <th>Taste Ratings</th>
-                <th>Delivery Ratings</th>
-                <th>Spiciness Ratings</th>
-                <th>Date</th>
-                <th>User</th>
+                <th>
+                    <h2>{{ place }} </h2>
+                    <h3>best restaurant</h3>
+                </th>
+                <th>
+                    <h2>{{ number_of_ratings }} </h2>
+                    <h3>ratings</h3>
+                </th>
+                <th>
+                    <h2>{{ number_of_users_rated }} </h2>
+                    <h3>users rated</h3>
+                </th>
             </tr>
         </thead>
-
-        <tbody>
-        {% for index in range(ratings["taste_rating"]|length) %}
-            <tr>
-                <td>{{ ratings["taste_rating"][index] }}</td>
-                <td>{{ ratings["delivery_rating"][index]}}</td>
-                <td>{{ ratings["spiciness_rating"][index] }}</td>
-                <td>{{ ratings["date"][index] }}</td>
-                <td>{{ ratings["user"][index] }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
     </table>
 
 </div>

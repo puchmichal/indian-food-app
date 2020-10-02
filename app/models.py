@@ -14,6 +14,9 @@ class Rating(db.Model):
     rate_by = db.Column(db.Integer)
     date = db.Column(db.Integer)
 
+    # TODO: add some method for generating DataFrames directly from DB query result.
+    # It is (and will be) done often.
+
     def __repr__(self):
         return "<Taste Rating {}, Delivery Rating {}>".format(self.taste, self.delivery)
 
