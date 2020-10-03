@@ -1,3 +1,4 @@
+import datetime
 import os
 from statistics import mean
 
@@ -5,7 +6,7 @@ from flask import Flask, Response, abort, flash, render_template, request
 from flask_bootstrap import Bootstrap
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
-from flask_user import UserManager, login_required, roles_required, user_registered
+from flask_user import UserManager, current_user, login_required, roles_required, user_registered
 from werkzeug.utils import redirect
 
 app = Flask(__name__)
@@ -41,31 +42,23 @@ def _after_user_registered_hook(sender, user, **extra):
 
 @app.route("/")
 def get_all_restaurants():
-    restaurants = db.session.query(Restaurant)
-
-    restaurants_list = [
-        {
-            "id": restaurant.id,
-            "name": restaurant.name,
-            "general_rating": mean(
-                [mean([rating.delivery, rating.taste]) for rating in restaurant.ratings]
-            ),
-            "taste_rating": mean([rating.taste for rating in restaurant.ratings]),
-            "delivery_rating": mean([rating.delivery for rating in restaurant.ratings]),
-            "spiciness_rating": mean([rating.spiciness for rating in restaurant.ratings]),
-        }
-        for restaurant in restaurants
-        if not restaurant.want_to_go
-    ]
-
-    return render_template("leaderboard.html", title="Leader Board", restaurants=restaurants_list)
+    return render_template(
+        template_name_or_list="leaderboard.html",
+        title="Leader Board",
+        restaurants=Restaurant.restaurants_df(Restaurant),
+    )
 
 
 @app.route("/profile")
+@login_required
 def profile():
+    ratings = db.session.query(Rating).filter_by(rate_by=current_user.id)
+    ratings = [rating.show() for rating in ratings]
+
     return render_template(
         template_name_or_list="profile.html",
         title="Profile",
+        ratings=ratings,
     )
 
 
@@ -73,20 +66,17 @@ def profile():
 def restaurant_profile(restaurant_id: int = None):
     restaurant = db.session.query(Restaurant).filter_by(id=restaurant_id).first()
 
-    ratings = {
-        "taste_rating": [rating.taste for rating in restaurant.ratings],
-        "delivery_rating": [rating.delivery for rating in restaurant.ratings],
-        "spiciness_rating": [rating.spiciness for rating in restaurant.ratings],
-    }
-
     if not restaurant:
         abort(Response("Restaurant does not exist", 404))
     else:
         return render_template(
             template_name_or_list="restaurant.html",
             title="Restauran profile",
-            restaurant=restaurant,
-            ratings=ratings,
+            place=restaurant.place,
+            number_of_ratings=restaurant.number_of_ratings,
+            number_of_users_rated=restaurant.number_of_users_rated,
+            url=restaurant.url,
+            name=restaurant.name,
         )
 
 
@@ -141,6 +131,8 @@ def add_rating():
             delivery=request.form.get("delivery_rating"),
             spiciness=request.form.get("spiciness_rating"),
             restaurant_id=restaurant_id,
+            rate_by=current_user.id,
+            date=datetime.datetime.today().strftime("%Y%m%d"),
         )
         db.session.add(rating)
         db.session.commit()

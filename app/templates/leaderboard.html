@@ -23,7 +23,7 @@
         </thead>
 
         <tbody>
-        {% for restaurant in restaurants %}
+        {% for _, restaurant in restaurants.iterrows() %}
             <tr>
                 <td>
                     <a href="{{ url_for("restaurant_profile", restaurant_id=restaurant["id"]) }}">
