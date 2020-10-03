@@ -54,12 +54,12 @@ def get_all_restaurants():
 @login_required
 def profile():
     ratings = db.session.query(Rating).filter_by(rate_by=current_user.id)
-    ratings_data = [rating.show() for rating in ratings]
+    ratings = [rating.show() for rating in ratings]
 
     return render_template(
         template_name_or_list="profile.html",
         title="Profile",
-        ratings_data=ratings_data,
+        ratings=ratings,
     )
 
 

@@ -81,13 +81,13 @@ class Restaurant(db.Model):
 
     @property
     def place(self):
-        df = self.restaurant_df.sort_values(by="general_rating", ascending=False)
+        df = self.restaurants_df().sort_values(by="general_rating", ascending=False)
         place = df[df["name"] == self.name].index.values.item() + 1
 
         return format_nth_place(place)
 
     def __repr__(self):
-        return f"Restaurant {self.name}"
+        return f"{self.name}"
 
 
 class User(db.Model, UserMixin):
